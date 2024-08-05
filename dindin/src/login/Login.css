@@ -1,0 +1,145 @@
+.container {
+display: flex;
+box-sizing: border-box;
+width: 1440px;
+height: 1024px;
+top: 749px;
+left: -21px;
+gap: 0px;
+opacity: 0.38px;
+background: url("https://s3-alpha-sig.figma.com/img/4a98/4d0f/8f24299959d31ab035e82bc8cb45e294?Expires=1723420800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=BCK3CRmD0wwQvOVpSCu6bczpZHJMJdy50sKXl1UwWSGLm3P4cFuX7omhTvzF7cgNFpjR2MxqEGvbRdgvREz2lM~GpFI2nHzfREQV1QrezmACoKgFgVjbHHfbSE1rbmMiYEEwjH9LEIOOwovWLi--Mf6VcJiXv9PfcD7VaSHpXd20UD0-Pw5dNqAxU2wBeVGxjAa5nrJAeo0SwM7D0PPxK36kt28OudgjTQy76xnpYxY~kA3HtBWb9kZzLsEK3zMAYXVXmpQ3QL7HjkVFFQWFpz6wkkr8ry2I5CeH6xP6ykmyyV9dFDbHQO93jfEHszPjW4npovDfdW9z~kByhJ9YcQ__");
+background-size: cover;
+}
+
+.leftLogin {
+display: flex;
+flex-direction: column;
+}
+
+p {
+width: 614px;
+height: 124px;
+margin-top: 327px;
+margin-left: 100px;
+}
+
+span {
+font-family: Rubik;
+text-align: left;
+color: #ffff;
+font-size: 52px;
+font-weight: 700;
+line-height: 61.62px;
+}
+
+a {
+width: 600px;
+height: 99px;
+margin-top: 33px;
+margin-left: 105px;
+gap: 0px;
+opacity: 0px;    
+font-family: Rubik;
+font-size: 28px;
+font-weight: 400;
+line-height: 33.18px;
+text-align: left;
+color: #FFFFFF
+}
+
+.cadastroBotao {
+cursor: pointer;
+width: 284px;
+height: 48px;
+margin-top: 43px;
+margin-left: 105px;
+gap: 0px;
+border-radius: 5px 5px 5px 5px;
+opacity: 0px;
+background-color: #7978D9;
+color: #FFFFFF;
+border: none;
+}
+
+.rightLogin {
+background-color: #FFFFFF;
+display: flex;
+flex-direction: column;
+width: 513px;
+height: 535px;
+margin-top: 194px;
+margin-left: 100px;
+gap: 0px;
+opacity: 0px;
+}
+
+h2 {
+display: flex;
+justify-content: center;
+margin-top: 60px;
+margin-bottom: 24px;
+font-family: Rubik;
+font-size: 28px;
+font-weight: 500;
+line-height: 33.18px;
+text-align: left;
+color: #7978D9
+}
+
+h3 {
+width: 200px;
+height: 26px;
+margin-left: 34px;
+gap: 0px;
+opacity: 0px;
+font-family: Rubik;
+font-size: 18px;
+font-weight: 400;
+line-height: 21.33px;
+text-align: left;
+color: #484848;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+width: 449px;
+height: 63px;
+margin-top: -14px;
+margin-bottom: 15px;
+margin-left: 32px;
+gap: 0px;
+border-radius: 5px;
+border: 1px 0px 0px 0px;
+opacity: 0px;
+font-family: Rubik;
+font-size: 18px;
+font-weight: 400;
+line-height: 21.33px;
+text-align: left;
+
+}
+
+.loginBotao {
+cursor: pointer;
+width: 449px;
+height: 48px;
+margin-top: 38px;
+margin-left: 32px;
+gap: 0px;
+border-radius: 5px;
+opacity: 0px;
+border: none;
+background-color: #7978D9;
+color: #FFFFFF;
+}
+
+.logo {
+    box-sizing: border-box;
+    position: absolute;
+    padding-top: 41px;
+    padding-left: 100px;
+}

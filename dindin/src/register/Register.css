@@ -1,0 +1,40 @@
+.register {
+    display: flex;
+    flex-direction: column;
+    width: 513px;
+height: 781px;
+margin-top: 148px;
+margin-left: 463px;
+gap: 0px;
+border: 1px 0px 0px 0px;
+opacity: 0px;
+background-color: white;
+}
+
+
+.cadastroBotao {
+    width: 449px;
+height: 49px;
+margin-top: 15px;
+margin-left: 32px;
+gap: 0px;
+border-radius: 5px;
+opacity: 0px;
+}
+
+.link {
+    align-self: flex-end;
+    display: flex;
+    font-family: Lato;
+font-size: 14px;
+font-weight: 700;
+line-height: 16.8px;
+color: #7B61FF;
+text-decoration: none;
+width: 215px;
+height: 17px;
+margin-top: 12px;
+margin-right: 128px;
+gap: 0px;
+opacity: 0px;
+}
