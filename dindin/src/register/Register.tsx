@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import logo from '../../logo/Logo.svg';
+import { registerUser } from "./RegisterData";
 import { Link } from 'react-router-dom';
 import "./Register.css";
 
@@ -12,6 +13,16 @@ const Register: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
+        try {
+            const response = await registerUser(name, email, password);
+            if (response) {
+                console.log('Usuario cadastrado', response);
+            }else {
+                console.log('falha no cadastro')
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 

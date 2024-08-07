@@ -6,17 +6,20 @@ import "./Login.css";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
+    const [senha, setSenha] = useState<string>("")
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {
-            const token = await autenticacao(email, password);
-            console.log('token:', token);
-
+            const response = await autenticacao(email, senha);
+            if (response) {
+                console.log('usuario autenticado', response);
+            }else {
+                console.log('falha no login')
+            }
         } catch (error) {
-            console.log('falha no login');
+            console.log('erro no login');
         }
     }
 
@@ -43,8 +46,8 @@ const Login: React.FC = () => {
                 <form onSubmit={handleSubmit}>
                     <h3>E-mail</h3>
                     <input type="email" onChange={(event) => setEmail(event.target.value)} required/>
-                    <h3>Password</h3>
-                    <input type="password" onChange={(event) => setPassword(event.target.value)} required/>
+                    <h3>Senha</h3>
+                    <input type="password" onChange={(event) => setSenha(event.target.value)} required/>
                     <button className="loginBotao">Entrar</button>
                 </form>
             </div>
