@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 0;
+    font-size: 100%;
+}
+
+header {
+    margin: 0 auto 20px auto;
+    padding: 3rem 0;
+    height: 8rem;
+    width: 90rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+main {
+    margin: 0px auto;
+    justify-content: space-between;
+    align-items: center;
+    width: 90rem;
+    display: flex;
+}

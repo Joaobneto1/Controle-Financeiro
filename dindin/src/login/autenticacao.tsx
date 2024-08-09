@@ -16,14 +16,14 @@ interface LoginRequest {
 }
 
 
-export const autenticacao = async (email: string, senha: string): Promise<string> => {
+export const autenticacao = async (email: string, senha: string): Promise<string | undefined> => {
     try {
         const requestData: LoginRequest = { email, senha };
 
         const response = await api.post<AuthResponse>('/login', requestData);
 
-        return response.data;
-        
+        return response.data.token;
+
     } catch (error) {
         console.log('login falhou', error);
         return undefined;

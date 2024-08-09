@@ -1,0 +1,45 @@
+.tabela_transacao {
+    border-collapse: collapse;
+    width: 62.5rem;
+}
+
+.titulo_container {
+    background: #fafafa;
+    height: 3.625rem;
+    box-shadow: 0px 0.125rem 0.6875rem 0px rgba(0, 0, 0, 0.1);
+    border-radius: 0.625rem;
+}
+
+.organizar_cima {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.organizar_baixo {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.lista_itens {
+    height: 3.625rem;
+}
+
+.lista_itens td {
+    border-bottom: 1px solid #E0E0E0;
+    border-collapse: collapse;
+}
+
+.lista_itens p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Data-item {
+    font-weight: bolder;
+}
+
+.data-th-txt {
+    cursor: pointer;
+
+}

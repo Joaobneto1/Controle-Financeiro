@@ -1,0 +1,50 @@
+.confirm_delet {
+    position: absolute;
+    padding: 10px;
+    background-color: #e6f2fc;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 100px;
+    text-align: center;
+}
+
+.confirm_delet p {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.button_yes {
+    background-color: #3A9FF1;
+}
+
+.button_no {
+    background-color: #FF576B;
+}
+
+.button_yes,
+.button_no {
+    padding: 8px;
+    flex: 1;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: opacity 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.button_yes:hover,
+.button_no:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
