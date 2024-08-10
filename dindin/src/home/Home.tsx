@@ -9,6 +9,7 @@ import { Transacao } from "../interfaces/interfaces";
 import { Tabela } from "../components/table/tabela";
 import { RegistrarModal } from "../components/registerModal/registrarModal";
 import { EditarRegistroModal } from "../components/editRegisterModal/editarModalRegistro";
+import { Header } from "../components/header/Header";
 
 
 
@@ -16,9 +17,7 @@ import { EditarRegistroModal } from "../components/editRegisterModal/editarModal
 export const Home = () => {
     const [addRegister, setAddRegister] = useState<boolean>(false);
     const [editRegister, setEditRegister] = useState<boolean>(false);
-    const [currentRegister, setCurrentRegister] = useState<Transacao | undefined>(
-        undefined
-    );
+    const [currentRegister, setCurrentRegister] = useState<Transacao | undefined>(undefined);
     const [transacao, setTransacao] = useState<Transacao[]>([]);
     const navigate = useNavigate();
 

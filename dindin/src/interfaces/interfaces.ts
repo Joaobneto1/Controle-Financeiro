@@ -42,3 +42,7 @@ export interface EditarCategoria {
     id: number;
     descricao: string;
 }
+
+export interface HeaderProps {
+    loggedIn: boolean;
+}

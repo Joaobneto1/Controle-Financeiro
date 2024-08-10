@@ -1,34 +1,40 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { getItem, removeItem } from "../../api/axiosApi";
+import { useNavigate } from "react-router-dom";
+import Logo from "../../assets/logo.svg";
+import iconSair from "../../../assets/iconSair.svg";
 import iconPerfil from "../../../assets/iconPerfil.svg";
-import Logo from "../../../assets/Logo.svg";
+import "../../global.css";
 import "./Header.css";
-import { useLocation } from "react-router-dom";
-import { DeslogarHeader } from "../deslogarHeader/deslogarHeader";
+import { HeaderProps } from "../../interfaces/interfaces";
 
-export const Header: React.FC = () => {
-    const currentLocation = useLocation();
+export const Header = ({ loggedIn }: HeaderProps) => {
+    const [logout, setLogout] = useState<boolean>(false);
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const navigate = useNavigate();
+    const [name, setName] = useState<string>(getItem("name") || "");
 
-    const isAuthenticationRoute =
-        currentLocation.pathname === "/Login" || currentLocation.pathname === "/Register";
+    useEffect(() => {
+        if (logout) {
+            removeItem("token");
+            removeItem("userId");
+            removeItem("name");
+            navigate("/");
+        }
+    }, [logout, navigate]);
 
-    const storedUser = localStorage.getItem("user");
-    const displayName = storedUser ? JSON.parse(storedUser).nome : "";
+    const handleProfilePicClick = () => {
+        setShowEditModal(true);
+    };
 
     return (
-        <header className="headerBackground">
-            <div className="logoContainer">
-                <img src={Logo} alt="Logo" />
-                <p className="logoText">Dindin</p>
-            </div>
-            {!isAuthenticationRoute && (
-                <div className="userSection">
-                    <img
-                        className="iconMargin"
-                        src={iconPerfil}
-                        alt="User Icon"
-                    />
-                    <p className="iconMargin">{displayName}</p>
-                    <DeslogarHeader />
+        <header>
+            <img src={Logo} alt="logo" style={{ width: "169px", height: "45px" }} />
+            {loggedIn && (
+                <div className="perfil_area">
+                    <img src={iconPerfil} alt="Perfil" className="perfil_pic" onClick={handleProfilePicClick} />
+                    <strong>{name}</strong>
+                    <img src={iconSair} alt="Sair" onClick={() => setLogout(true)} />
                 </div>
             )}
         </header>
