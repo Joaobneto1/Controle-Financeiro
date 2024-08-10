@@ -4,11 +4,11 @@
     display: block;
     background-color: #7978d9;
     color: white;
+    cursor: pointer;
+    font-size: 15px;
+    margin: 0 57px;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 0 57px;
 }
 
 button:hover {

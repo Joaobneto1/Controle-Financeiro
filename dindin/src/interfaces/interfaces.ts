@@ -46,3 +46,11 @@ export interface EditarCategoria {
 export interface HeaderProps {
     loggedIn: boolean;
 }
+
+export interface ResumeTProps {
+    transacao: Transacao[];
+}
+
+export interface FilterBProps {
+    filterB: () => void;
+}

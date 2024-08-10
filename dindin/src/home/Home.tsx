@@ -10,21 +10,21 @@ import { Tabela } from "../components/table/tabela";
 import { RegistrarModal } from "../components/registerModal/registrarModal";
 import { EditarRegistroModal } from "../components/editRegisterModal/editarModalRegistro";
 import { Header } from "../components/header/Header";
-
-
-
+import { DeslogarHeader } from "../components/deslogarHeader/deslogarHeader";
+import { ResumoT } from "../components/resumoTrans/resumoT";
 
 export const Home = () => {
     const [addRegister, setAddRegister] = useState<boolean>(false);
     const [editRegister, setEditRegister] = useState<boolean>(false);
     const [currentRegister, setCurrentRegister] = useState<Transacao | undefined>(undefined);
-    const [transacao, setTransacao] = useState<Transacao[]>([]);
+    const [transaction, setTransaction] = useState<Transacao[]>([]);
+    const [showFilters, setShowFilters] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = getItem("token");
         if (!token) {
-            navigate("/login");
+            navigate("/Login");
         }
     }, [navigate]);
 
@@ -43,7 +43,7 @@ export const Home = () => {
                     },
                 }
             );
-            setTransacao(response.data);
+            setTransaction(response.data);
         } catch (error) {
             console.error("Erro ao buscar transaçãos:", error);
         }
@@ -56,4 +56,47 @@ export const Home = () => {
     const handleUpdateTransaction = () => {
         fetchTransacoes();
     };
+
+    const toggleFilters = () => {
+        setShowFilters(!showFilters);
+    };
+
+    return (
+        <div className="home_backg">
+            <Header loggedIn={true} />
+            <main className="home_principal">
+                <div className="descricao_container">
+                    <FilterButton filterB={toggleFilters} />
+                    {showFilters}
+                    <div className="descricao">
+                        <Tabela
+                            transacao={transaction}
+                            setTransacao={setTransaction}
+                            setCurrentRegister={setCurrentRegister}
+                            setEditRegister={setEditRegister}
+                        />
+                        <div className="resumo_container">
+                            <ResumoT transacao={transaction} />
+                            <button onClick={() => setAddRegister(true)}>
+                                Adicionar Registro
+                            </button>
+                            <RegistrarModal
+                                show={addRegister}
+                                onClose={() => setAddRegister(false)}
+                                onNewTransaction={handleNewTransaction}
+                            />
+                            {editRegister && (
+                                <EditarRegistroModal
+                                    show={editRegister}
+                                    onClose={() => setEditRegister(false)}
+                                    onUpdate={handleUpdateTransaction}
+                                    currentRegister={currentRegister}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    );
 }; 

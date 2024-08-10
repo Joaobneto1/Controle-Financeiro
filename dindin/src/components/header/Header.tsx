@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getItem, removeItem } from "../../api/axiosApi";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo.svg";
+import Logo from "../../../assets/Logo.svg"
 import iconSair from "../../../assets/iconSair.svg";
 import iconPerfil from "../../../assets/iconPerfil.svg";
 import "../../global.css";
