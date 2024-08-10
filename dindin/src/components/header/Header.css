@@ -1,0 +1,33 @@
+.headerBackground {
+    margin: 1rem 4rem;
+    display: flex;
+    color: #ffffff;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logoContainer {
+    flex-direction: row;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.logoText {
+    font-size: 2.25rem;
+    font-weight: 600;
+    color: #ffffff;
+
+}
+
+.userSection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.iconMargin {
+    margin-right: 10px;
+}
