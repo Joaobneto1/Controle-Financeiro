@@ -20,7 +20,7 @@ export const AddModalRegister: React.FC<AddRegisterModalProp> = ({
     const token = getItem("token");
 
     useEffect(() => {
-        const buscarCategorias = async () => {
+        const fetchCategories = async () => {
             try {
                 const resposta = await axios.get(
                     "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
@@ -39,7 +39,7 @@ export const AddModalRegister: React.FC<AddRegisterModalProp> = ({
             }
         };
 
-        buscarCategorias();
+        fetchCategories();
     }, [token]);
 
     useEffect(() => {

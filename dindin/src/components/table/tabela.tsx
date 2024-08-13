@@ -33,7 +33,7 @@ export const Table = ({
     }
 
     useEffect(() => {
-        const buscarCategorias = async () => {
+        const fetchCategories = async () => {
             try {
                 const resposta = await axios.get(
                     "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
@@ -49,7 +49,7 @@ export const Table = ({
             }
         };
 
-        buscarCategorias();
+        fetchCategories();
     }, [token]);
 
     const obterDescricaoCategoria = (categoriaId: number) => {
@@ -79,7 +79,7 @@ export const Table = ({
         return diasSemana[dia];
     };
 
-    const excluirTransacao = async (id: number) => {
+    const handleDeleteTransaction = async (id: number) => {
         try {
             await axios.delete(
                 `https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${id}`,
@@ -103,7 +103,7 @@ export const Table = ({
         }
     };
 
-    const buscarTransacoes = async () => {
+    const fetchTransactions = async () => {
         try {
             const resposta = await axios.get(
                 "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao",
@@ -182,7 +182,7 @@ export const Table = ({
                                 {mostrarPopupExcluir === transacao.id && (
                                     <Popup
                                         onConfirm={() => {
-                                            excluirTransacao(transacao.id);
+                                            handleDeleteTransaction(transacao.id);
                                             setMostrarPopupExcluir(null);
                                         }}
                                         onCancel={() => setMostrarPopupExcluir(null)}
@@ -199,7 +199,7 @@ export const Table = ({
                     onClose={() => setMostrarModalEdicao(false)}
                     onUpdate={() => {
                         setMostrarModalEdicao(false);
-                        buscarTransacoes();
+                        fetchTransactions();
                     }}
                     currentRegister={registroAtualEdicao}
                 />
