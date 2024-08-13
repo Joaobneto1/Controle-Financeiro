@@ -1,40 +1,34 @@
-import { useEffect, useState } from "react";
-import { getItem, removeItem } from "../../api/axiosApi";
-import { useNavigate } from "react-router-dom";
-import Logo from "../../../assets/Logo.svg"
-import iconSair from "../../../assets/iconSair.svg";
+import React from "react";
 import iconPerfil from "../../../assets/iconPerfil.svg";
-import "../../global.css";
-import "./Header.css";
-import { HeaderProps } from "../../interfaces/interfaces";
+import logo from "../../../assets/Logo.svg";
+import { useLocation } from "react-router-dom";
+import "./Header.css"
+import { DeslogarHeader } from "../deslogarHeader/deslogarHeader";
 
-export const Header = ({ loggedIn }: HeaderProps) => {
-    const [logout, setLogout] = useState<boolean>(false);
-    const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const [name, setName] = useState<string>(getItem("name") || "");
+export const Header: React.FC = () => {
+    const currentPath = useLocation();
 
-    useEffect(() => {
-        if (logout) {
-            removeItem("token");
-            removeItem("userId");
-            removeItem("name");
-            navigate("/");
-        }
-    }, [logout, navigate]);
+    const isAuthenticationPage =
+        currentPath.pathname === "/login" || currentPath.pathname === "/register";
 
-    const handleProfilePicClick = () => {
-        setShowEditModal(true);
-    };
+    const storedUser = localStorage.getItem("user");
+    const displayName = storedUser ? JSON.parse(storedUser).nome : "";
 
     return (
-        <header>
-            <img src={Logo} alt="logo" style={{ width: "169px", height: "45px" }} />
-            {loggedIn && (
-                <div className="perfil_area">
-                    <img src={iconPerfil} alt="Perfil" className="perfil_pic" onClick={handleProfilePicClick} />
-                    <strong>{name}</strong>
-                    <img src={iconSair} alt="Sair" onClick={() => setLogout(true)} />
+        <header className="background_header">
+            <div className="logo_container">
+                <img src={logo} alt="Logo" />
+                <p className="logo_name">Dindin</p>
+            </div>
+            {!isAuthenticationPage && (
+                <div className="header_icons">
+                    <img
+                        className="itens_espaço"
+                        src={iconPerfil}
+                        alt="Ícone do usuário"
+                    />
+                    <p className="itens_espaço">{displayName}</p>
+                    <DeslogarHeader />
                 </div>
             )}
         </header>

@@ -1,10 +1,9 @@
 import './filtroButton.css';
 import Filter from "../../../assets/iconFiltro.svg";
-import { FilterBProps } from '../../interfaces/interfaces';
 
-export const FilterButton: React.FC<FilterBProps> = ({ filterB }) => {
+export const FilterButton = () => {
     return (
-        <div className='filter-button' onClick={filterB}>
+        <div className='filter_btn'>
             <img src={Filter} alt="filtro" />
             <strong>Filtrar</strong>
         </div>

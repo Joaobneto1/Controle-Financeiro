@@ -1,137 +1,210 @@
+import iconEditar from "../../../assets/iconEditar.svg";
+import iconLixo from "../../../assets/iconLixo.svg";
+import iconTriangulo from "../../../assets/iconTriangulo.svg";
 import "../../global.css";
-import "./tabela.css";
-import iconEdit from "../../../assets/iconEditar.svg"
-import iconDelete from "../../../assets/iconLixo.svg"
-import iconTriangle from "../../../assets/iconTriangulo.svg"
-import { useEffect, useState } from "react";
-import { PropsTabela, TableCategoria } from "../../interfaces/interfaces";
-import axios from "axios";
 import { getItem } from "../../api/axiosApi";
-import { ConfirmDelete } from "../deletPopUp/confirmDelete";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Popup } from "../deletPopUp/confirmDelete";
+import { EditModalRegister } from "../registerModal/registrarModaEdit";
+import { ICategory, Transaction, TableProps } from "../../interfaces/interfaces";
+import "./tabela.css";
 
-export const Tabela = ({
-    transacao,
-    setTransacao,
-    setEditRegister,
-    setCurrentRegister,
-}: PropsTabela) => {
+export const Table = ({
+    transaction, setTransaction, setEditRegister, setCurrentRegister }: TableProps) => {
     const token = getItem("token");
-    const [categorias, setCategorias] = useState<TableCategoria[]>([]);
-    const [showDeletePopup, setShowDeletePopup] = useState<number | null>(null);
-    const [isAscending, setIsAscending] = useState(true);
+    const [registroAtualEdicao] = useState<Transaction | undefined>(undefined);
+    const [mostrarModalEdicao, setMostrarModalEdicao] = useState(false);
+    const [categorias, setCategorias] = useState<ICategory[]>([]);
+    const [mostrarPopupExcluir, setMostrarPopupExcluir] = useState<number | null>(null);
+    const [ordenacao, setOrdenacao] = useState("asc");
 
-    useEffect(() => {
-        const fetchCategorias = async () => {
-            try {
-                const { data } = await axios.get(
-                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
-                    { headers: { Authorization: `Bearer ${token}` } }
-                );
-                setCategorias(data);
-            } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
-            }
-        };
-        fetchCategorias();
-    }, [token]);
+    function alterarOrdenacao() {
+        const novaOrdenacao = ordenacao === "asc" ? "desc" : "asc";
 
-    const getCategoriaDescricao = (categoriaId: number) => {
-        const categoria = categorias.find(categor => Number(categor.id) === categoriaId);
-        return categoria ? categoria.descricao : "Desconhecida";
+        const transacoesOrdenadas = [...transaction].sort((a, b) => {
+            const dataA = new Date(a.data);
+            const dataB = new Date(b.data);
+            return novaOrdenacao === "asc" ? dataA.getTime() - dataB.getTime() : dataB.getTime() - dataA.getTime();
+        });
+
+        setTransaction(transacoesOrdenadas);
+        setOrdenacao(novaOrdenacao);
     }
 
-    const handleDate = (data: string, options?: Intl.DateTimeFormatOptions) =>
-        new Date(data).toLocaleDateString("pt-BR", { timeZone: "UTC", ...options });
+    useEffect(() => {
+        const buscarCategorias = async () => {
+            try {
+                const resposta = await axios.get(
+                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setCategorias(resposta.data);
+            } catch (erro) {
+                console.error("Erro ao buscar categorias:", erro);
+            }
+        };
 
-    const handleDeleteItem = async (id: number) => {
+        buscarCategorias();
+    }, [token]);
+
+    const obterDescricaoCategoria = (categoriaId: number) => {
+        const categoria = categorias.find((cat) => Number(cat.id) === categoriaId);
+        return categoria ? categoria.descricao : "Desconhecida";
+    };
+
+    const formatarData = (data: string) => {
+        const dataFormatada = new Date(data).toLocaleDateString("pt-BR", {
+            timeZone: "UTC",
+        });
+        return dataFormatada;
+    };
+
+    const obterDiaSemana = (data: string) => {
+        const diasSemana = [
+            "Segunda",
+            "Terça",
+            "Quarta",
+            "Quinta",
+            "Sexta",
+            "Sábado",
+            "Domingo",
+        ];
+        const dataObjeto = new Date(data);
+        const dia = dataObjeto.getDay();
+        return diasSemana[dia];
+    };
+
+    const excluirTransacao = async (id: number) => {
         try {
             await axios.delete(
                 `https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${id}`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
             );
-            setTransacao(prev => prev.filter(t => t.id !== id));
-        } catch (error) {
-            console.error("Erro ao excluir transação:", error);
+            setTransaction(transaction.filter((transacao) => transacao.id !== id));
+        } catch (erro) {
+            console.error("Erro ao excluir transação:", erro);
         }
     };
 
-    const handleEditRegister = (id: number) => {
-        const registro = transacao.find(t => t.id === id);
+    const editarRegistro = (id: number) => {
+        const registro = transaction.find((transacao) => transacao.id === id);
         if (registro) {
             setCurrentRegister(registro);
             setEditRegister(true);
         }
     };
 
-    const handleSort = () => {
-        const sortedTransacao = [...transacao].sort((a, b) =>
-            isAscending
-                ? new Date(a.data).getTime() - new Date(b.data).getTime()
-                : new Date(b.data).getTime() - new Date(a.data).getTime()
-        );
-        setIsAscending(!isAscending);
-        setTransacao(sortedTransacao);
+    const buscarTransacoes = async () => {
+        try {
+            const resposta = await axios.get(
+                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setTransaction(resposta.data);
+        } catch (erro) {
+            console.error("Erro ao buscar transações:", erro);
+        }
     };
     return (
-        <div className="tabela_container">
-            <table className="tabela_transacao">
-                <thead className="titulo_container">
-                    <tr className="titulo_container_text">
-                        <th onClick={handleSort}>
+        <div className="schedule_container">
+            <table>
+                <thead>
+                    <tr className="schedule_header">
+                        <th className="icon_triangulo" onClick={alterarOrdenacao}>
                             Data
                             <img
-                                src={iconTriangle}
-                                alt="ícone para organizar a data"
-                                className={isAscending ? "organizar_cima" : "organizar_baixo"}
+                                src={iconTriangulo}
+                                alt="Ícone ordenar por data ascendente"
+                                style={{ display: ordenacao === "asc" ? "inline" : "none" }}
                             />
                         </th>
-                        <th>Dia da Semana</th>
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Valor</th>
-                        <th></th>
-                        <th></th>
+                        <th className="schedule_itens">Dia da Semana</th>
+                        <th className="schedule_itens">Descrição</th>
+                        <th className="schedule_itens">Categoria</th>
+                        <th className="schedule_itens">Valor</th>
+                        <th className="schedule_itens"></th>
                     </tr>
                 </thead>
-                <tbody className="lista_container">
-                    {transacao.map(({ id, data, descricao, categoria_id, valor, tipo }) => (
-                        <tr key={id} className="lista_itens">
-                            <td><p>{handleDate(data)}</p></td>
-                            <td><p>{handleDate(data, { weekday: "long" })}</p></td>
-                            <td className="tabela_descricao"><p>{descricao}</p></td>
-                            <td className="tabela_categoria"><p>{getCategoriaDescricao(categoria_id)}</p></td>
-                            <td className="valor_coluna" style={{ color: tipo === "saida" ? "#FA8C10" : "#7B61FF" }}>
-                                <p>R$ {valor}</p>
+                <tbody>
+                    {transaction.map((transacao) => (
+                        <tr key={transacao.id}>
+                            <td className="schedule_itens_btn"
+                            >
+                                <p className="data_item">{formatarData(transacao.data)}</p>
                             </td>
-                            <td className="icone_editar">
-                                <p>
-                                    <img
-                                        src={iconEdit}
-                                        alt="ícone de editar"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => handleEditRegister(id)}
-                                    />
-                                    <img
-                                        src={iconDelete}
-                                        alt="ícone de deletar"
-                                        style={{ marginLeft: "13px", cursor: "pointer" }}
-                                        onClick={() => setShowDeletePopup(id)}
-                                    />
-                                    {showDeletePopup === id && (
-                                        <ConfirmDelete
-                                            bConfirm={() => {
-                                                handleDeleteItem(id);
-                                                setShowDeletePopup(null);
-                                            }}
-                                            bCancel={() => setShowDeletePopup(null)}
-                                        />
-                                    )}
+                            <td className="schedule_itens_btn"
+                            >
+                                <p>{obterDiaSemana(transacao.data)}</p>
+                            </td>
+                            <td className="schedule_itens_btn"
+                            > <p className="container_description">
+                                    {transacao.descricao}
                                 </p>
+                            </td>
+                            <td className="schedule_itens_btn"
+                            >
+                                <p>{obterDescricaoCategoria(transacao.categoria_id)}</p>
+                            </td>
+                            <td className="schedule_itens_btn"
+                                style={{
+                                    color:
+                                        transacao.tipo === "saida" ? "#fa8c10;" : "#6460fb;",
+                                }}
+                            >
+                                <p>R$ {transacao.valor}</p>
+                            </td>
+                            <td className="schedule_itens_btn" >
+                                <img
+                                    src={iconEditar}
+                                    alt="Edit icon"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => editarRegistro(transacao.id)}
+                                />
+                                <img
+                                    src={iconLixo}
+                                    alt="Delete icon"
+                                    style={{ marginLeft: "13px", cursor: "pointer" }}
+                                    onClick={() => setMostrarPopupExcluir(transacao.id)}
+                                />
+                                {mostrarPopupExcluir === transacao.id && (
+                                    <Popup
+                                        onConfirm={() => {
+                                            excluirTransacao(transacao.id);
+                                            setMostrarPopupExcluir(null);
+                                        }}
+                                        onCancel={() => setMostrarPopupExcluir(null)}
+                                    />
+                                )}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {mostrarModalEdicao && registroAtualEdicao && (
+                <EditModalRegister
+                    show={mostrarModalEdicao}
+                    onClose={() => setMostrarModalEdicao(false)}
+                    onUpdate={() => {
+                        setMostrarModalEdicao(false);
+                        buscarTransacoes();
+                    }}
+                    currentRegister={registroAtualEdicao}
+                />
+            )}
         </div>
     );
-};
+
+}

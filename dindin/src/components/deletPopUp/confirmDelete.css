@@ -1,50 +1,50 @@
-.confirm_delet {
-    position: absolute;
-    padding: 10px;
-    background-color: #e6f2fc;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+.popup_confirm {
     width: 100px;
-    text-align: center;
+    background-color: #fafafa;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #b9b9b9;
     border-radius: 8px;
-    border: 1px solid #ccc;
+    z-index: 10;
+    position: absolute;
+    border: 1px solid #b9b9b9;
 }
 
-.confirm_delet p {
+.popup_confirm p {
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 12px;
 }
 
-.buttons {
+.popup_btns {
+    gap: 5px;
     display: flex;
     justify-content: space-between;
-    gap: 5px;
 }
 
-.button_yes {
-    background-color: #3A9FF1;
-}
-
-.button_no {
-    background-color: #FF576B;
-}
-
-.button_yes,
-.button_no {
+.popup_btnYes,
+.popup_btnNo {
     padding: 8px;
-    font-size: 10px;
-    flex: 1;
     border: none;
     border-radius: 4px;
-    color: white;
+    flex: 1;
+    font-size: 12px;
     opacity: 0.8;
     transition: opacity 0.3s, transform 0.3s;
+    color: #ffffff;
     cursor: pointer;
 }
 
-.button_yes:hover,
-.button_no:hover {
+.popup_btnYes {
+    background-color: #3a9ff1;
+}
+
+.popup_btnNo {
+    background-color: #ff576b;
+}
+
+.popup_btnYes:hover,
+.popup_btnNoo:hover {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.3);
 }

@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import "./registrarModal.css";
-import "../../global.css"
-import { getItem } from "../../api/axiosApi";
-import { TableCategoria, RegistrarModalProps } from "../../interfaces/interfaces";
 import { NumericFormat } from "react-number-format";
+import "../../global.css";
+import "./addModalRegistro.css";
+import { getItem } from "../../api/axiosApi";
+import { ICategory, AddRegisterModalProp } from "../../interfaces/interfaces";
 
-
-export const RegistrarModal: React.FC<RegistrarModalProps> = ({
-    show,
-    onClose,
-    onNewTransaction,
+export const AddModalRegister: React.FC<AddRegisterModalProp> = ({
+    show, onClose, onNewTransaction,
 }) => {
     const [valor, setValor] = useState("");
-    const [categoria, setCategoria] = useState<TableCategoria[]>([]);
+    const [categorias, setCategorias] = useState<ICategory[]>([]);
     const [data, setData] = useState("");
     const [descricao, setDescricao] = useState("");
     const [tipo, setTipo] = useState<"entrada" | "saida">("entrada");
@@ -22,9 +20,9 @@ export const RegistrarModal: React.FC<RegistrarModalProps> = ({
     const token = getItem("token");
 
     useEffect(() => {
-        const fetchCategorias = async () => {
+        const buscarCategorias = async () => {
             try {
-                const response = await axios.get(
+                const resposta = await axios.get(
                     "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
                     {
                         headers: {
@@ -32,86 +30,103 @@ export const RegistrarModal: React.FC<RegistrarModalProps> = ({
                         },
                     }
                 );
-                setCategoria(response.data);
-            } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
+                setCategorias(resposta.data);
+                if (resposta.data.length > 0) {
+                    setCategoriaSelecionada(resposta.data[0].descricao);
+                }
+            } catch (erro) {
+                console.error("Erro ao buscar categorias:", erro);
             }
         };
 
-        fetchCategorias();
+        buscarCategorias();
     }, [token]);
 
     useEffect(() => {
-        if (categoria.length > 0) {
-            setCategoriaSelecionada(categoria[0].descricao);
-        }
-    }, [categoria]);
+        setTipo("entrada");
+    }, [show]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleEnvio = async (e: React.FormEvent) => {
         e.preventDefault();
-        const idCategoria = categoria.find(
-            (option) => option.descricao === categoriaSelecionada
+        const categoriaId = categorias.find(
+            (opcao) => opcao.descricao === categoriaSelecionada
         )?.id;
-        const newResgister = { tipo, valor: Number(valor), categoria_id: idCategoria, data, descricao };
+        const novoRegistro = {
+            tipo,
+            valor: Number(valor),
+            categoria_id: categoriaId,
+            data,
+            descricao: descricao.trim() === "" ? "-" : descricao,
+        };
 
         try {
-            const response = await axios.post(
-                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao", newResgister, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
+            const resposta = await axios.post(
+                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao",
+                novoRegistro,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
             );
 
-            if (response.status === 201) {
-                setTipo("entrada")
-                setCategoriaSelecionada(categoria[0].descricao);
+            if (resposta.status === 201) {
+                setTipo("entrada");
+                setCategoriaSelecionada(categorias[0].descricao);
                 setData("");
                 setValor("");
                 setDescricao("");
                 onNewTransaction();
             }
             onClose();
-        } catch (error) {
-            console.error("Erro ao adicionar registro:", error);
+        } catch (erro) {
+            console.error("Erro ao adicionar registro:", erro);
         }
     };
 
-    const handleTipoClick = (tipo: "entrada" | "saida") => {
-        setTipo(tipo);
+    const handleCliqueTipo = (novoTipo: "entrada" | "saida") => {
+        setTipo(novoTipo);
     };
 
     if (!show) {
         return null;
     }
-
     return (
         <div className="modal">
-            <div className="modal_conteudo">
-                <span className="close" onClick={onClose}>
-                    &times;
-                </span>
-                <h2>Adicionar Registro</h2>
+            <div className="conteudo_modal">
+                <div className="modal_container_titulo">
+                    <h2 className="modal_titulo">Adicionar Registro</h2>
+                    <span className="fechar" onClick={onClose}>
+                        &times;
+                    </span>
+                </div>
+
                 <div className="tipo_transacao">
                     <button
+                        className="default_btn btn_modal_tipo"
                         style={{
-                            backgroundColor: tipo === "entrada" ? "#3A9FF1" : "#808080",
+                            backgroundColor:
+                                tipo === "entrada"
+                                    ? "#3a9ff1;"
+                                    : "#555555;",
                         }}
-                        onClick={() => handleTipoClick("entrada")}
+                        onClick={() => handleCliqueTipo("entrada")}
                     >
                         Entrada
                     </button>
                     <button
+                        className="default_btn btn_modal_tipo"
                         style={{
-                            backgroundColor: tipo === "saida" ? "#FF576B" : "#808080",
+                            backgroundColor:
+                                tipo === "saida" ? "#ff576b;" : "#555555;",
                         }}
-                        onClick={() => handleTipoClick("saida")}
+                        onClick={() => handleCliqueTipo("saida")}
                     >
                         Saída
                     </button>
                 </div>
-                <form onSubmit={handleSubmit}>
-                    <div className="formulario_g">
+                <form className="container_group" onSubmit={handleEnvio}>
+                    <div className={"formulario_group"}>
                         <label>Valor</label>
                         <NumericFormat
                             value={valor}
@@ -129,20 +144,21 @@ export const RegistrarModal: React.FC<RegistrarModalProps> = ({
                             required
                         />
                     </div>
-                    <div className="formulario_g">
+                    <div className={"formulario_group"}>
                         <label>Categoria</label>
                         <select
+                            className="categoria_sct"
                             value={categoriaSelecionada}
                             onChange={(e) => setCategoriaSelecionada(e.target.value)}
                         >
-                            {categoria.map((option) => (
+                            {categorias.map((option) => (
                                 <option key={option.id} value={option.descricao}>
                                     {option.descricao}
                                 </option>
                             ))}
                         </select>
                     </div>
-                    <div className="formulario_g">
+                    <div className={"formulario_group"}>
                         <label>Data</label>
                         <input
                             type="date"
@@ -151,20 +167,20 @@ export const RegistrarModal: React.FC<RegistrarModalProps> = ({
                             required
                         />
                     </div>
-                    <div className="formulario_g">
+                    <div className={"formulario_group"}>
                         <label>Descrição</label>
                         <input
                             type="text"
                             value={descricao}
                             onChange={(e) => setDescricao(e.target.value)}
-                            required
                         />
                     </div>
-                    <button className="confirmar_btn" type="submit">
+                    <button className="default_btn modal_btn" type="submit">
                         Confirmar
                     </button>
                 </form>
             </div>
         </div>
     );
+
 };
