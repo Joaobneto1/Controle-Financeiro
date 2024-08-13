@@ -1,4 +1,4 @@
-.container {
+.loginContainer {
 display: flex;
 box-sizing: border-box;
 width: 1440px;
@@ -7,7 +7,7 @@ top: 749px;
 left: -21px;
 gap: 0px;
 opacity: 0.38px;
-background: url("https://s3-alpha-sig.figma.com/img/4a98/4d0f/8f24299959d31ab035e82bc8cb45e294?Expires=1723420800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=BCK3CRmD0wwQvOVpSCu6bczpZHJMJdy50sKXl1UwWSGLm3P4cFuX7omhTvzF7cgNFpjR2MxqEGvbRdgvREz2lM~GpFI2nHzfREQV1QrezmACoKgFgVjbHHfbSE1rbmMiYEEwjH9LEIOOwovWLi--Mf6VcJiXv9PfcD7VaSHpXd20UD0-Pw5dNqAxU2wBeVGxjAa5nrJAeo0SwM7D0PPxK36kt28OudgjTQy76xnpYxY~kA3HtBWb9kZzLsEK3zMAYXVXmpQ3QL7HjkVFFQWFpz6wkkr8ry2I5CeH6xP6ykmyyV9dFDbHQO93jfEHszPjW4npovDfdW9z~kByhJ9YcQ__");
+background: url('../../assets/background\ 1.png');
 background-size: cover;
 }
 
@@ -16,14 +16,14 @@ display: flex;
 flex-direction: column;
 }
 
-p {
+.leftLogin p {
 width: 614px;
 height: 124px;
 margin-top: 327px;
 margin-left: 100px;
 }
 
-span {
+.leftLogin span {
 font-family: Rubik;
 text-align: left;
 color: #ffff;
@@ -32,7 +32,7 @@ font-weight: 700;
 line-height: 61.62px;
 }
 
-a {
+.leftLogin a {
 width: 600px;
 height: 99px;
 margin-top: 33px;
@@ -61,7 +61,7 @@ color: #FFFFFF;
 border: none;
 }
 
-.rightLogin {
+.rightFormContainer {
 background-color: #FFFFFF;
 display: flex;
 flex-direction: column;
@@ -73,7 +73,7 @@ gap: 0px;
 opacity: 0px;
 }
 
-h2 {
+.rightFormContainer label {
 display: flex;
 justify-content: center;
 margin-top: 60px;
@@ -86,29 +86,29 @@ text-align: left;
 color: #7978D9
 }
 
-h3 {
-width: 200px;
-height: 26px;
-margin-left: 34px;
-gap: 0px;
-opacity: 0px;
-font-family: Rubik;
-font-size: 18px;
-font-weight: 400;
-line-height: 21.33px;
-text-align: left;
-color: #484848;
+.rightFormContainer h1 {
+        width: 200px;
+        height: 26px;
+        margin-left: 34px;
+        gap: 0px;
+        opacity: 0px;
+        font-family: Rubik;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 21.33px;
+        text-align: left;
+        color: #484848;
 }
 
-form {
+.loginForm {
     display: flex;
     flex-direction: column;
 }
 
-input {
+.loginInput {
 width: 449px;
 height: 63px;
-margin-top: -14px;
+margin-top: 10px;
 margin-bottom: 15px;
 margin-left: 32px;
 gap: 0px;
@@ -123,11 +123,11 @@ text-align: left;
 
 }
 
-.loginBotao {
+.botaoLogin {
 cursor: pointer;
 width: 449px;
 height: 48px;
-margin-top: 38px;
+margin-top: 16px;
 margin-left: 32px;
 gap: 0px;
 border-radius: 5px;

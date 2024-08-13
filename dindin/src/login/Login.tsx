@@ -1,37 +1,46 @@
-import React, { useState } from "react";
-import logo from '../../assets/Logo.svg';
-import { autenticacao } from './autenticacao.tsx';
-import { Link } from 'react-router-dom';
+import { useState, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from '../../assets/Logo.svg';
+import api from "../api/axiosApi";
 import "./Login.css";
 
-const Login: React.FC = () => {
-    const [email, setEmail] = useState<string>("")
-    const [senha, setSenha] = useState<string>("")
+export const Login = () => {
+    const [email, setEmail] = useState<string>("");
+    const [senha, setSenha] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
 
         try {
-            const response = await autenticacao(email, senha);
-            if (response) {
-                console.log('usuario autenticado', response);
+            const response = await api.post('/login', { email, senha });
+
+            const usuario = response.data;
+
+            localStorage.setItem('conta', JSON.stringify(usuario));
+            setErrorMessage("");
+            navigate('/Home');
+
+        } catch (error: any) {
+            if (error.response && error.response.status === 401) {
+                setErrorMessage("Email ou senha incorretos.");
             } else {
-                console.log('falha no login')
+                setErrorMessage("Erro ao realizar login. Tente novamente.");
             }
-        } catch (error) {
-            console.log('erro no login');
+            console.error(error);
         }
-    }
+    };
 
     return (
-        <div className="container">
-            <header>
-                <img className="logo" src={logo} alt="logo" />
-            </header>
+        <div className="loginContainer">
+            <div className="header">
+                <img className="logo" src={Logo} alt="logo" />
+            </div>
             <div className="leftLogin">
                 <p>
-                    <span>Controle suas<span className="topSpan" style={{ color: '#6460FB' }}> finanças</span>
-                        , sem planilha chata.</span>
+                    <span>Controle suas<span className="topSpan" style={{ color: '#6460FB' }}> finanças</span>, sem planilha chata.</span>
                 </p>
                 <a>
                     Organizar as suas finanças nunca foi tão fácil,
@@ -41,18 +50,36 @@ const Login: React.FC = () => {
                     <button className="cadastroBotao">Cadastre-se</button>
                 </Link>
             </div>
-            <div className="rightLogin">
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <h3>E-mail</h3>
-                    <input type="email" onChange={(event) => setEmail(event.target.value)} required />
-                    <h3>Senha</h3>
-                    <input type="password" onChange={(event) => setSenha(event.target.value)} required />
-                    <button className="loginBotao">Entrar</button>
+            <div className="rightFormContainer">
+                <form onSubmit={handleSubmit} className="loginForm">
+                    <label>Login</label>
+                    <br />
+                    <h1>Login</h1>
+                    <input
+                        type="text"
+                        name="email"
+                        className="loginInput"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <br />
+                    
+                    <br />
+                    <h1>Password</h1>
+                    <input
+                        type="password"
+                        name="senha"
+                        className="loginInput"
+                        required
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                    />
+                    <br />
+                    {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+                    <button className="botaoLogin" type="submit">Entrar</button>
                 </form>
             </div>
         </div>
-    )
-}
-
-export default Login;
+    );
+};
