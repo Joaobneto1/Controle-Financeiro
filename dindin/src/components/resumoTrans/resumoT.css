@@ -1,68 +1,33 @@
-.resumo {
+.item {
+    padding: 8px 0;
+    color: #000000;
+    justify-content: space-between;
+    align-items: center;
     display: flex;
-    width: 14.75rem;
-    height: 12.25rem;
-    background: #FAFAFA;
-    justify-content: space-evenly;
-    border-radius: 0.625rem;
-    box-shadow: 0px 0.125rem 0.6875rem 0px rgba(0, 0, 0, 0.10);
 }
 
-.resumo hr {
-    margin: 0 auto;
-    background-color: #EAEAEA;
-    border-style: none;
-    width: 10.625rem;
-    height: 0.0625rem;
+.item_rotulo {
+    color: #000000;
 }
 
-.resumo_container {
-    margin: 0 auto;
-    width: 10.625rem;
+.saida_valor {
+    color: #fa8c10;
 }
 
-.resumo_container h2 {
-    font-family: 'Rubik', sans-serif;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #2F2F2F;
+.saldo_valor {
+    color: #3a9ff1;
 }
 
-.resumo_tabela {
-    width: 10.625rem;
-    margin: 0 auto;
-    display: flex;
+hr {
+    border: none;
+    border-top: 2px solid #b9b9b9;
+    margin: 16px 0;
+}
+
+.resume_container_main {
+    width: 250px;
+    height: 300px;
     flex-direction: column;
-    text-align: left;
-}
-
-.resumo_tabela tr,
-td {
-    width: 10.625rem;
-    height: 2rem;
-    color: #2F2F2F;
-    font-family: 'Rubik', sans-serif;
-    font-size: 0.8125rem;
-    font-weight: 600;
-}
-
-.resumo_tabela td {
-    text-align: right;
-}
-
-.entradas {
-    color: #645FFB;
-}
-
-.saidas {
-    color: #FA8C10;
-}
-
-.saldo_texto {
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-
-.saldo {
-    color: #3A9FF1;
+    justify-content: space-between;
+    display: flex;
 }

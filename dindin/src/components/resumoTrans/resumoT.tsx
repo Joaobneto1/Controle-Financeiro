@@ -50,37 +50,25 @@ export const ResumoT = ({ transacao }: ResumeTProps) => {
     }, [transacao]);
 
     return (
-        <div className="resumo">
-            <div className="resumo_container">
-                <h2>Resumo</h2>
+        <><div className="resumo_container">
+            <h2>Resumo</h2>
+            <div className="item">
+                <span className="item_rotulo">Entrada</span>
+                <span className="entrada_valor">R$ {entrada.toFixed(2)}</span>
             </div>
-            <table className="resumo_tabela">
-                <tbody className="tbody">
-                    <tr>
-                        <th scope="row" className="entrada_texto">
-                            Entradas
-                        </th>
-                        <td className="entradas">R$ {entrada.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="saida_texto">
-                            Saídas
-                        </th>
-                        <td className="saidas">R$ {saida.toFixed(2)}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr />
-            <table className="resumo_tabela">
-                <tbody>
-                    <tr>
-                        <th scope="row" className="saldo_texto">
-                            Saldo
-                        </th>
-                        <td className="saldo">R$ {saldo.toFixed(2)}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    );
+            <div className="item">
+                <span className="item_rotulo">Saída</span>
+                <span className="saida_valor">R$ {saida.toFixed(2)}</span>
+            </div>
+            <div className="item">
+                <span className="item_rotulo">Saldo</span>
+                <span
+                    className="saldo_valor"
+                    style={{
+                        color:
+                            saldo < 0 ? "#fa8c10" : "#3a9ff1",
+                    }}> R$ {saldo.toFixed(2)}
+                </span>
+            </div>
+        </div></>);
 };
