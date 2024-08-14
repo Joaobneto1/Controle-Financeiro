@@ -1,68 +1,45 @@
-.schedule_header th {
-    padding: 12px 16px;
-    font-size: 19.2px;
-    font-weight: bold;
+.tabela_transacao {
+    border-collapse: collapse;
+    width: 62.5rem;
 }
 
-table {
-    width: 100%;
+.titulo_container {
+    background: #fafafa;
+    height: 3.625rem;
+    box-shadow: 0px 0.125rem 0.6875rem 0px rgba(0, 0, 0, 0.1);
+    border-radius: 0.625rem;
+}
+
+.organizar_cima {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.organizar_baixo {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.lista_itens {
+    height: 3.625rem;
+}
+
+.lista_itens td {
+    border-bottom: 1px solid #E0E0E0;
     border-collapse: collapse;
 }
 
-.icon_triangulo {
+.lista_itens p {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.schedule_header {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    border: 1px solid #b9b9b9;
-    background-color: #fafafa;
-}
-
-.schedule_itens_btn {
-    padding: 16px 32px;
-    text-align: center;
-    border-bottom: 1px #b9b9b9 solid;
-}
-
-.container_description {
-    width: 150px;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-.title_container_text {
-    height: 64px;
-    padding: 0 16px;
-    background: #ffffff;
-    box-shadow: 0px 2px 11px 0px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-.data_item {
+.Data-item {
     font-weight: bolder;
-    font-size: 19.2px;
 }
 
-/* scroll */
-
-.schedule_container {
-    max-height: 500px;
-    overflow-x: auto;
-    overflow-y: auto;
-}
-
-.schedule_container::-webkit-scrollbar,
-.container_description::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-}
-
-.schedule_container::-webkit-scrollbar-thumb,
-.container_description::-webkit-scrollbar-thumb {
-    background-color: #b9b9b9;
-    border-radius: 0.5rem;
+.data-th-txt {
     cursor: pointer;
+
 }

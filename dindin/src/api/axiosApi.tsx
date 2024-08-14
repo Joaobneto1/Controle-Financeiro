@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-const token = localStorage.getItem("token");
-
 const api = axios.create({
     baseURL: 'https://desafio-backend-03-dindin.pedagogico.cubos.academy',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
     },
 });
+
+const token = localStorage.getItem("token");
 
 export const getItem = (key: string) => {
     const value = localStorage.getItem(key);

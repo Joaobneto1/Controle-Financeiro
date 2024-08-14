@@ -1,18 +1,14 @@
 import React from "react";
-import { PopupProp } from "../../interfaces/interfaces";
 import "./confirmDelete.css";
+import { ConfirmDeletePoP } from "../../interfaces/interfaces";
 
-export const Popup: React.FC<PopupProp> = ({ onConfirm, onCancel }) => {
+export const ConfirmDelete: React.FC<ConfirmDeletePoP> = ({ bConfirm, bCancel }) => {
     return (
-        <div className="popup_confirm">
+        <div className="confirm_delet">
             <p>Apagar Item?</p>
-            <div className="popup_btns">
-                <button className="popup_btnYes" onClick={onConfirm}>
-                    Sim
-                </button>
-                <button className="popup_btnNo" onClick={onCancel}>
-                    Não
-                </button>
+            <div className="buttons">
+                <button className="button_yes" onClick={bConfirm}>Sim</button>
+                <button className="button_no" onClick={bCancel}>Não</button>
             </div>
         </div>
     );
