@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axiosApi";
 import { FilterButton } from "../components/filterButton/filtroButton";
 import { Table } from "../components/table/tabela";
 import { Resumo } from "../components/resumoTrans/resumoT";
@@ -20,27 +20,24 @@ export const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = getItem("token");
+        const conta = getItem("conta");
+        const usuario = conta ? JSON.parse(conta) : null;
+        const token = usuario?.token;
+
         if (!token) {
             navigate("/login");
+        } else {
+            fetchTransactions(token);
         }
     }, [navigate]);
 
-    useEffect(() => {
-        fetchTransactions();
-    }, []);
-
-    const fetchTransactions = async () => {
-        const token = getItem("token");
+    const fetchTransactions = async (token: string) => {
         try {
-            const response = await axios.get(
-                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await api.get("https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             const transactions = response.data.sort(
                 (a: Transaction, b: Transaction) => {
                     const dateA = new Date(a.data);
@@ -56,12 +53,23 @@ export const Home = () => {
     };
 
     const handleNewTransaction = () => {
-        fetchTransactions();
+        const conta = getItem("conta");
+        const usuario = conta ? JSON.parse(conta) : null;
+        const token = usuario?.token;
+        if (token) {
+            fetchTransactions(token);
+        }
     };
 
     const handleUpdateTransaction = () => {
-        fetchTransactions();
-    }
+        const conta = getItem("conta");
+        const usuario = conta ? JSON.parse(conta) : null;
+        const token = usuario?.token;
+        if (token) {
+            fetchTransactions(token);
+        }
+    };
+
     return (
         <div>
             <Header />

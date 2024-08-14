@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../api/axiosApi";
 import "../../global.css";
 import "./registrarModalEdit.css"
 import { NumberFormatValues } from "react-number-format";
@@ -36,14 +36,8 @@ export const EditModalRegister: React.FC<RegisterModalProps> = ({
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const resposta = await axios.get(
-                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const resposta = await api.get(
+                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria");
                 setCategorias(resposta.data);
             } catch (erro) {
                 console.error("Erro ao buscar categorias:", erro);
@@ -83,15 +77,7 @@ export const EditModalRegister: React.FC<RegisterModalProps> = ({
         };
 
         try {
-            await axios.put(
-                `https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${currentRegister?.id}`,
-                registroAtualizado,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            await api.put(`https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${currentRegister?.id}`, registroAtualizado,);
             console.log("Registro editado");
             if (typeof onUpdate === "function") {
                 onUpdate();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../api/axiosApi";
 import { NumericFormat } from "react-number-format";
 import "../../global.css";
 import "./addModalRegistro.css";
@@ -22,14 +22,7 @@ export const AddModalRegister: React.FC<AddRegisterModalProp> = ({
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const resposta = await axios.get(
-                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const resposta = await api.get("https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria");
                 setCategorias(resposta.data);
                 if (resposta.data.length > 0) {
                     setCategoriaSelecionada(resposta.data[0].descricao);
@@ -60,16 +53,8 @@ export const AddModalRegister: React.FC<AddRegisterModalProp> = ({
         };
 
         try {
-            const resposta = await axios.post(
-                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao",
-                novoRegistro,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
+            const resposta = await api.post(
+                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao", novoRegistro);
             if (resposta.status === 201) {
                 setTipo("entrada");
                 setCategoriaSelecionada(categorias[0].descricao);

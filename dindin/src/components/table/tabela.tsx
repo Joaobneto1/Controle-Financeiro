@@ -4,11 +4,11 @@ import iconTriangulo from "../../../assets/iconTriangulo.svg";
 import "../../global.css";
 import { getItem } from "../../api/axiosApi";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Popup } from "../deletPopUp/confirmDelete";
 import { EditModalRegister } from "../registerModal/registrarModaEdit";
 import { ICategory, Transaction, TableProps } from "../../interfaces/interfaces";
 import "./tabela.css";
+import api from "../../api/axiosApi";
 
 export const Table = ({
     transaction, setTransaction, setEditRegister, setCurrentRegister }: TableProps) => {
@@ -35,14 +35,7 @@ export const Table = ({
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const resposta = await axios.get(
-                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const resposta = await api.get("https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria");
                 setCategorias(resposta.data);
             } catch (erro) {
                 console.error("Erro ao buscar categorias:", erro);
@@ -81,14 +74,7 @@ export const Table = ({
 
     const handleDeleteTransaction = async (id: number) => {
         try {
-            await axios.delete(
-                `https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            await api.delete(`https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${id}`);
             setTransaction(transaction.filter((transacao) => transacao.id !== id));
         } catch (erro) {
             console.error("Erro ao excluir transação:", erro);
@@ -105,14 +91,8 @@ export const Table = ({
 
     const fetchTransactions = async () => {
         try {
-            const resposta = await axios.get(
-                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const resposta = await api.get(
+                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao");
             setTransaction(resposta.data);
         } catch (erro) {
             console.error("Erro ao buscar transações:", erro);
