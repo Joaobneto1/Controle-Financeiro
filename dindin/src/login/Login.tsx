@@ -64,7 +64,7 @@ export const Login = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <br />
-                    
+
                     <br />
                     <h1>Password</h1>
                     <input

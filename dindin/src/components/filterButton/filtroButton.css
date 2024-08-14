@@ -1,4 +1,4 @@
-.filter-button {
+.filter_btn {
     width: 90px;
     height: 35px;
     display: flex;
@@ -12,12 +12,12 @@
     flex-direction: row;
 }
 
-.filter-button img {
+.filter_btn img {
     width: 14px;
     height: 14px;
 }
 
-.filter-button strong {
+.filter_btn strong {
     color: #000;
     font-family: 'Lato', sans-serif;
     font-style: normal;
