@@ -5,6 +5,8 @@ export const Api_Url = "https://desafio-backend-03-dindin.pedagogico.cubos.acade
 const token = localStorage.getItem("token");
 
 const api = axios.create({
+    baseURL: 'https://desafio-backend-03-dindin.pedagogico.cubos.academy',
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -23,13 +25,5 @@ export const removeItem = (key: string) => {
 export const setItem = (key: string, value: string) => {
     localStorage.setItem(key, JSON.stringify(value));
 };
-
-export const Endpoints = {
-    user: `${Api_Url}/usuario`,
-    login: `${Api_Url}/login`,
-    category: `${Api_Url}/categoria`,
-    transaction: `${Api_Url}/transacao`,
-    statement: `${Api_Url}/transacao/extrato`,
-}
 
 export default api;

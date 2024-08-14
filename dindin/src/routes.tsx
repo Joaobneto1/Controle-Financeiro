@@ -20,5 +20,5 @@ export const RoutesApp = () => {
 
 function PrivateRoute() {
     const token = localStorage.getItem("token");
-    return token ? <Outlet /> : <Navigate to="/signin" />;
+    return token ? <Outlet /> : <Navigate to="/login" />;
 }
