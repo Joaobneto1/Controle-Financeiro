@@ -1,36 +1,37 @@
 import axios from "axios";
 import "./resumoT.css";
-import { getItem } from "../../api/axiosApi";
 import { Transacao, ResumeTProps } from "../../interfaces/interfaces";
 import { useState, useEffect } from "react";
+import { getToken } from "../../utils/Auth";
 
 export const ResumoT = ({ transacao }: ResumeTProps) => {
     const [entrada, setIncome] = useState<number>(0);
     const [saida, setExpense] = useState<number>(0);
     const saldo = entrada - saida;
 
-    const authToken = getItem("token");
-
     useEffect(() => {
+        const authToken = getToken();
         const fetchSummary = async () => {
-            try {
-                const response = await axios.get(
-                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/extrato",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${authToken}`,
-                        },
-                    }
-                );
-                setIncome(response.data.entrada);
-                setExpense(response.data.saida);
-                console.log(response);
-            } catch (error) {
-                console.error("Erro ao buscar resumo:", error);
+            if (authToken) {
+                try {
+                    const response = await axios.get(
+                        "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/extrato",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${authToken}`,
+                            },
+                        }
+                    );
+                    setIncome(response.data.entrada);
+                    setExpense(response.data.saida);
+                    console.log(response);
+                } catch (error) {
+                    console.error("Erro ao buscar resumo:", error);
+                }
             }
         };
         fetchSummary();
-    }, [authToken]);
+    }, [transacao]);
 
     useEffect(() => {
         let totalIncome = 0;

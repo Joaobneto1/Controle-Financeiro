@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NumericFormat } from "react-number-format";
-import { getItem } from "../../api/axiosApi";
+import { EditarRegistrarModalProps, EditarCategoria } from "../../interfaces/interfaces";
+import { getToken } from "../../utils/Auth";
 import "../editRegisterModal/editarModalRegistro.css";
 import "./editarModalRegistro.css";
-import { EditarRegistrarModalProps, EditarCategoria } from "../../interfaces/interfaces";
 
 export const EditarRegistroModal: React.FC<EditarRegistrarModalProps> = ({
     show,
@@ -21,19 +21,21 @@ export const EditarRegistroModal: React.FC<EditarRegistrarModalProps> = ({
     });
 
     const [categorias, setCategorias] = useState<EditarCategoria[]>([]);
-    const token = getItem("token");
 
     useEffect(() => {
-        axios
-            .get("https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria", {
+        const token = getToken();
+        if (token) {
+            axios.get("https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria", {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((response) => setCategorias(response.data))
             .catch((error) => console.error("Erro ao buscar categorias:", error));
-    }, [token]);
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const token = getToken();
         const updatedRegister = {
             valor: parseFloat(formData.valor.replace(/[^0-9,.]/g, "").replace(",", ".")),
             categoria_id: parseInt(formData.categoria),
@@ -42,22 +44,25 @@ export const EditarRegistroModal: React.FC<EditarRegistrarModalProps> = ({
             tipo: formData.tipo,
         };
 
-        try {
-            await axios.put(
-                `https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${currentRegister?.id}`,
-                updatedRegister,
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-            console.log("Registro editado");
-            onUpdate?.();
-            onClose();
-        } catch (error) {
-            console.error("Erro ao editar registro:", error);
+        if (token) {
+            try {
+                await axios.put(
+                    `https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${currentRegister?.id}`,
+                    updatedRegister,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                console.log("Registro editado");
+                onUpdate?.();
+                onClose();
+            } catch (error) {
+                console.error("Erro ao editar registro:", error);
+            }
         }
     };
 
-    const handleTipoClick = (tipo: "entrada" | "saida") =>
+    const handleTipoClick = (tipo: "entrada" | "saida") => {
         setFormData((prev) => ({ ...prev, tipo }));
+    };
 
     if (!show) return null;
 

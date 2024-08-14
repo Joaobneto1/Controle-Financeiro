@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./registrarModal.css";
 import "../../global.css"
-import { getItem } from "../../api/axiosApi";
 import { TableCategoria, RegistrarModalProps } from "../../interfaces/interfaces";
 import { NumericFormat } from "react-number-format";
-
+import { getToken } from "../../utils/Auth";
 
 export const RegistrarModal: React.FC<RegistrarModalProps> = ({
     show,
@@ -19,27 +18,28 @@ export const RegistrarModal: React.FC<RegistrarModalProps> = ({
     const [tipo, setTipo] = useState<"entrada" | "saida">("entrada");
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
 
-    const token = getItem("token");
-
     useEffect(() => {
+        const token = getToken();
         const fetchCategorias = async () => {
-            try {
-                const response = await axios.get(
-                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-                setCategoria(response.data);
-            } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    setCategoria(response.data);
+                } catch (error) {
+                    console.error("Erro ao buscar categorias:", error);
+                }
             }
         };
 
         fetchCategorias();
-    }, [token]);
+    }, []);
 
     useEffect(() => {
         if (categoria.length > 0) {
@@ -49,31 +49,32 @@ export const RegistrarModal: React.FC<RegistrarModalProps> = ({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const idCategoria = categoria.find(
-            (option) => option.descricao === categoriaSelecionada
-        )?.id;
+        const token = getToken();
+        const idCategoria = categoria.find((option) => option.descricao === categoriaSelecionada)?.id;
         const newResgister = { tipo, valor: Number(valor), categoria_id: idCategoria, data, descricao };
 
-        try {
-            const response = await axios.post(
-                "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao", newResgister, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-            );
+        if (token) {
+            try {
+                const response = await axios.post(
+                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao", newResgister, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+                );
 
-            if (response.status === 201) {
-                setTipo("entrada")
-                setCategoriaSelecionada(categoria[0].descricao);
-                setData("");
-                setValor("");
-                setDescricao("");
-                onNewTransaction();
+                if (response.status === 201) {
+                    setTipo("entrada");
+                    setCategoriaSelecionada(categoria[0].descricao);
+                    setData("");
+                    setValor("");
+                    setDescricao("");
+                    onNewTransaction();
+                }
+                onClose();
+            } catch (error) {
+                console.error("Erro ao adicionar registro:", error);
             }
-            onClose();
-        } catch (error) {
-            console.error("Erro ao adicionar registro:", error);
         }
     };
 

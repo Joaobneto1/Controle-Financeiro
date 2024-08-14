@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './Home.css';
-import '../global.css'
+import '../global.css';
 import axios from "axios";
-import { FilterButton } from "../components/filterButton/filtroButton"
-import { getItem } from "../api/axiosApi";
+import { FilterButton } from "../components/filterButton/filtroButton";
+import { getToken } from "../utils/Auth.ts"; 
 import { Transacao } from "../interfaces/interfaces";
 import { Tabela } from "../components/table/tabela";
 import { RegistrarModal } from "../components/registerModal/registrarModal";
 import { EditarRegistroModal } from "../components/editRegisterModal/editarModalRegistro";
 import { Header } from "../components/header/Header";
-import { DeslogarHeader } from "../components/deslogarHeader/deslogarHeader";
-import { ResumoT } from "../components/resumoTrans/resumoT";
+import { ResumoT } from "../components/resumoTrans/resumoT.tsx";
 
 export const Home = () => {
     const [addRegister, setAddRegister] = useState<boolean>(false);
@@ -22,18 +21,16 @@ export const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = getItem("token");
+        const token = getToken();
+
         if (!token) {
-            navigate("/Login");
+            navigate("/login");
+        } else {
+            fetchTransacoes(token);
         }
     }, [navigate]);
 
-    useEffect(() => {
-        fetchTransacoes();
-    }, []);
-
-    const fetchTransacoes = async () => {
-        const token = getItem("token");
+    const fetchTransacoes = async (token: string) => {
         try {
             const response = await axios.get(
                 "https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao",
@@ -45,16 +42,22 @@ export const Home = () => {
             );
             setTransaction(response.data);
         } catch (error) {
-            console.error("Erro ao buscar transaçãos:", error);
+            console.error("Erro ao buscar transações:", error);
         }
     };
 
     const handleNewTransaction = () => {
-        fetchTransacoes();
+        const token = getToken(); 
+        if (token) {
+            fetchTransacoes(token);
+        }
     };
 
     const handleUpdateTransaction = () => {
-        fetchTransacoes();
+        const token = getToken(); 
+        if (token) {
+            fetchTransacoes(token);
+        }
     };
 
     const toggleFilters = () => {
@@ -67,7 +70,9 @@ export const Home = () => {
             <main className="home_principal">
                 <div className="descricao_container">
                     <FilterButton filterB={toggleFilters} />
-                    {showFilters}
+                    {showFilters && (
+                        <div>Conteúdo dos filtros</div> 
+                    )}
                     <div className="descricao">
                         <Tabela
                             transacao={transaction}
@@ -99,4 +104,4 @@ export const Home = () => {
             </main>
         </div>
     );
-}; 
+};

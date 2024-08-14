@@ -8,7 +8,7 @@ export const DeslogarHeader: React.FC = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.removeItem("nome");
         navigate("/Register");
     };
 

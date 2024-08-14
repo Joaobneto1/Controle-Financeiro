@@ -1,13 +1,13 @@
 import "../../global.css";
 import "./tabela.css";
-import iconEdit from "../../../assets/iconEditar.svg"
-import iconDelete from "../../../assets/iconLixo.svg"
-import iconTriangle from "../../../assets/iconTriangulo.svg"
+import iconEdit from "../../../assets/iconEditar.svg";
+import iconDelete from "../../../assets/iconLixo.svg";
+import iconTriangle from "../../../assets/iconTriangulo.svg";
 import { useEffect, useState } from "react";
 import { PropsTabela, TableCategoria } from "../../interfaces/interfaces";
 import axios from "axios";
-import { getItem } from "../../api/axiosApi";
 import { ConfirmDelete } from "../deletPopUp/confirmDelete";
+import { getToken } from "../../utils/Auth.ts";
 
 export const Tabela = ({
     transacao,
@@ -15,25 +15,28 @@ export const Tabela = ({
     setEditRegister,
     setCurrentRegister,
 }: PropsTabela) => {
-    const token = getItem("token");
     const [categorias, setCategorias] = useState<TableCategoria[]>([]);
     const [showDeletePopup, setShowDeletePopup] = useState<number | null>(null);
     const [isAscending, setIsAscending] = useState(true);
 
     useEffect(() => {
-        const fetchCategorias = async () => {
-            try {
-                const { data } = await axios.get(
-                    "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
-                    { headers: { Authorization: `Bearer ${token}` } }
-                );
-                setCategorias(data);
-            } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
+        const token = getToken();
+        const fetchCategories = async () => {
+            if (token) {
+                try {
+                    const { data } = await axios.get(
+                        "https://desafio-backend-03-dindin.pedagogico.cubos.academy/categoria",
+                        { headers: { Authorization: `Bearer ${token}` } }
+                    );
+                    setCategorias(data);
+                } catch (error) {
+                    console.error("Erro ao buscar categorias:", error);
+                }
             }
         };
-        fetchCategorias();
-    }, [token]);
+        fetchCategories();
+    }, []);
+
 
     const getCategoriaDescricao = (categoriaId: number) => {
         const categoria = categorias.find(categor => Number(categor.id) === categoriaId);
@@ -44,6 +47,8 @@ export const Tabela = ({
         new Date(data).toLocaleDateString("pt-BR", { timeZone: "UTC", ...options });
 
     const handleDeleteItem = async (id: number) => {
+        const token = getToken();
+        if (token) {
         try {
             await axios.delete(
                 `https://desafio-backend-03-dindin.pedagogico.cubos.academy/transacao/${id}`,
@@ -53,6 +58,7 @@ export const Tabela = ({
         } catch (error) {
             console.error("Erro ao excluir transação:", error);
         }
+     }
     };
 
     const handleEditRegister = (id: number) => {
