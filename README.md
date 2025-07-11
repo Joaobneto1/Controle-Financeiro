@@ -78,8 +78,8 @@ Construir uma aplicação front-end robusta com as seguintes funcionalidades:
 Clone o projeto e inicie o servidor local:
 
 ```bash
-git clone https://github.com/Joaobneto1/desafio-frontend-m08.git
-cd desafio-frontend-m08
+git clone https://github.com/Joaobneto1/Controle-Financeiro
+cd dindin
 npm install
 npm start
 ```
